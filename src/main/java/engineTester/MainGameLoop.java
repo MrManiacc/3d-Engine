@@ -48,9 +48,11 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 		TextMaster.init(loader);
 		
-		FontType font = new FontType(loader.loadTexture("harrington"), new File("src/main/resources/harrington.fnt"));
-		GUIText text = new GUIText("This is some text!", 3f, font, new Vector2f(0f, 0f), 1f, true);
-		text.setColour(1, 0, 0);
+		FontType font = new FontType(loader.loadTexture("candara"), new File("src/main/resources/candara.fnt"));
+		GUIText text = new GUIText("This is some text!", 3f, font, new Vector2f(0f, 0.4f), 1f, true);
+		text.setColour(0, 0, 0);
+		text.setBorderWidth(0.6f);
+		text.setOutlineColor(new Vector3f(1,1,1));
 
 		// *********TERRAIN TEXTURE STUFF**********
 		
