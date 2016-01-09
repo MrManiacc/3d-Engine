@@ -56,7 +56,7 @@ public class MainGameLoop {
         ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
         FontType font = new FontType(loader.loadTexture("candara"), new File("src/main/resources/candara.fnt"));
-        GUIText text = new GUIText("This is some text!", 3f, font, new Vector2f(0f, 0.4f), 1f, true);
+        GUIText text = new GUIText("This is some text!", 3f, font, new Vector2f(0f, 0.0f), 1f, true);
         text.setColour(0, 0, 0);
         text.setBorderWidth(0.6f);
         text.setOutlineColor(new Vector3f(1, 1, 1));
@@ -186,6 +186,7 @@ public class MainGameLoop {
 
         //*********Particle System below**********************
 
+        //Fire
         ParticleTexture fireTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
         fireTexture.setAdditive(true);
         ParticleSystem fireSystem = new ParticleSystem(fireTexture, 400, 10, 0.1f, 2, 5f);
@@ -195,6 +196,7 @@ public class MainGameLoop {
         fireSystem.setScaleError(1f);
         fireSystem.randomizeRotation();
 
+        //Cosmic
         ParticleTexture cosmicTexture = new ParticleTexture(loader.loadTexture("cosmic"), 4);
         cosmicTexture.setAdditive(true);
         ParticleSystem cosmicSystem = new ParticleSystem(cosmicTexture, 200, 10, 0.1f, 1, 2f);
@@ -203,6 +205,11 @@ public class MainGameLoop {
         fireSystem.setSpeedError(0.6f);
         fireSystem.setScaleError(1f);
         fireSystem.randomizeRotation();
+
+        //For hellix
+        ParticleTexture hellixTexture = new ParticleTexture(loader.loadTexture("cosmic"), 4);
+        hellixTexture.setAdditive(true);
+        ParticleSystem smokeSystem = new ParticleSystem(hellixTexture, 100, 20, -0.2f, 0.8f, 0.7f);
 
         //****************Game Loop Below*********************
 
@@ -215,7 +222,11 @@ public class MainGameLoop {
                 fireSystem.generateParticles(new Vector3f(player.getPosition()));
             if (Keyboard.isKeyDown(Keyboard.KEY_I))
                 cosmicSystem.generateParticles(new Vector3f(player.getPosition()));
-
+            while (Keyboard.next())
+                if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
+                    smokeSystem.playerCircle(new Vector3f(player.getPosition()));
+                    cosmicSystem.playHellex(new Vector3f(player.getPosition()));
+                }
 
             ParticleMaster.update(camera);
 
