@@ -29,6 +29,7 @@ import objConverter.OBJFileLoader;
 import particles.Particle;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
+import particles.ParticleTexture;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
@@ -167,7 +168,7 @@ public class MainGameLoop {
         TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(
                 loader.loadTexture("playerTexture")));
 
-        Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
+        Player player = new Player(stanfordBunny, new Vector3f(0, 0, 0), 0, 100, 0, 0.6f);
         entities.add(player);
         Camera camera = new Camera(player);
         List<GuiTexture> guiTextures = new ArrayList<GuiTexture>();
@@ -185,12 +186,23 @@ public class MainGameLoop {
 
         //*********Particle System below**********************
 
-        ParticleSystem system = new ParticleSystem(50, 25, 0.4f, 4, 1);
-        system.randomizeRotation();
-        system.setDirection(new Vector3f(0, 1, 0), 0.1f);
-        system.setLifeError(0.1f);
-        system.setSpeedError(0.4f);
-        system.setScaleError(0.8f);
+        ParticleTexture fireTexture = new ParticleTexture(loader.loadTexture("fire"), 8);
+        fireTexture.setAdditive(true);
+        ParticleSystem fireSystem = new ParticleSystem(fireTexture, 400, 10, 0.1f, 2, 5f);
+        fireSystem.setDirection(new Vector3f(0, 2, 0), 0.1f);
+        fireSystem.setLifeError(0.2f);
+        fireSystem.setSpeedError(0.6f);
+        fireSystem.setScaleError(1f);
+        fireSystem.randomizeRotation();
+
+        ParticleTexture cosmicTexture = new ParticleTexture(loader.loadTexture("cosmic"), 4);
+        cosmicTexture.setAdditive(true);
+        ParticleSystem cosmicSystem = new ParticleSystem(cosmicTexture, 200, 10, 0.1f, 1, 2f);
+        fireSystem.setDirection(new Vector3f(0, 2, 0), 0.1f);
+        fireSystem.setLifeError(0.2f);
+        fireSystem.setSpeedError(0.6f);
+        fireSystem.setScaleError(1f);
+        fireSystem.randomizeRotation();
 
         //****************Game Loop Below*********************
 
@@ -199,17 +211,20 @@ public class MainGameLoop {
             camera.move();
             picker.update();
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_Y))
-                system.generateParticles(player.getPosition());
+            if (Keyboard.isKeyDown(Keyboard.KEY_U))
+                fireSystem.generateParticles(new Vector3f(player.getPosition()));
+            if (Keyboard.isKeyDown(Keyboard.KEY_I))
+                cosmicSystem.generateParticles(new Vector3f(player.getPosition()));
 
-            ParticleMaster.update();
+
+            ParticleMaster.update(camera);
 
             entity.increaseRotation(0, 1, 0);
             entity2.increaseRotation(0, 1, 0);
             entity3.increaseRotation(0, 1, 0);
             GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 
-            //render reflection teture
+            //render reflection texture
             buffers.bindReflectionFrameBuffer();
             float distance = 2 * (camera.getPosition().y - water.getHeight());
             camera.getPosition().y -= distance;
