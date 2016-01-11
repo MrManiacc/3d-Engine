@@ -109,46 +109,6 @@ public class ParticleSystem {
         }
     }
 
-    double hellixTime = 0;
-    double hellixRadius = 1.7;
-
-    public void playHellex(Vector3f location) {
-        hellixTime = hellixTime + Math.PI / 16;
-        double x = hellixRadius * Math.cos(hellixTime);
-        double y = 0.5 * hellixTime;
-        double z = hellixRadius * Math.sin(hellixTime);
-        Vector3f newLocation = new Vector3f(location.x + (float) x, location.y + (float) y, location.z + (float) z);
-        spawnParticle(newLocation);
-        if (hellixTime > Math.PI * 5) {
-            hellixTime = 0;
-            return;
-        } else {
-            playHellex(location);
-        }
-    }
-
-
-    double circlePhi = 0;
-    double circleRadius = 5;
-
-    public void playerCircle(Vector3f location) {
-        circlePhi += Math.PI / 10;
-        for (double theta = 0; theta <= 2 * Math.PI; theta += Math.PI / 40) {
-            double x = circleRadius * Math.cos(theta) * Math.sin(circlePhi);
-            double y = circleRadius * Math.cos(circlePhi) + 1.5f;
-            double z = circleRadius * Math.sin(theta) * Math.sin(circlePhi);
-            Vector3f newLocation = new Vector3f(location.x + (float) x, location.y + (float) y, location.z + (float) z);
-            spawnParticle(newLocation);
-        }
-        if (circlePhi >8* Math.PI) {
-            circlePhi = 0;
-            return;
-        } else {
-            playerCircle(location);
-        }
-
-    }
-
     private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
         float cosAngle = (float) Math.cos(angle);
         Random random = new Random();

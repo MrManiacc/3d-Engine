@@ -222,11 +222,6 @@ public class MainGameLoop {
                 fireSystem.generateParticles(new Vector3f(player.getPosition()));
             if (Keyboard.isKeyDown(Keyboard.KEY_I))
                 cosmicSystem.generateParticles(new Vector3f(player.getPosition()));
-            while (Keyboard.next())
-                if (Keyboard.isKeyDown(Keyboard.KEY_O)) {
-                    smokeSystem.playerCircle(new Vector3f(player.getPosition()));
-                    cosmicSystem.playHellex(new Vector3f(player.getPosition()));
-                }
 
             ParticleMaster.update(camera);
 

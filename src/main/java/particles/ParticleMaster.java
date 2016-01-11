@@ -20,15 +20,19 @@ public class ParticleMaster {
     public static void update(Camera camera) {
         Iterator<Map.Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
         while (mapIterator.hasNext()) {
-            List<Particle> list = mapIterator.next().getValue();
+            Map.Entry<ParticleTexture, List<Particle>> entry = mapIterator.next();
+            List<Particle> list = entry.getValue();
             Iterator<Particle> iterator = list.iterator();
             while (iterator.hasNext()) {
                 Particle p = iterator.next();
                 boolean stillAlive = p.update(camera);
-                if (!stillAlive) iterator.remove();
-                if (list.isEmpty()) mapIterator.remove();
+                if (!stillAlive) {
+                    iterator.remove();
+                    if (list.isEmpty()) mapIterator.remove();
+                }
             }
-            InsertionSort.sortHighToLow(list);
+            if (!entry.getKey().isAdditive())
+                InsertionSort.sortHighToLow(list);
         }
     }
 
@@ -47,6 +51,14 @@ public class ParticleMaster {
             particles.put(particle.getTexture(), list);
         }
         list.add(particle);
+    }
+
+    public static int getAliveParticles() {
+        int total = 0;
+        for (ParticleTexture texture : particles.keySet()) {
+            total += particles.get(texture).size();
+        }
+        return total;
     }
 
 }
