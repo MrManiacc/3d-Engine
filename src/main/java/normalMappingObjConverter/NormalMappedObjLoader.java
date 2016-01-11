@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -16,11 +17,10 @@ import renderEngine.Loader;
 
 public class NormalMappedObjLoader {
 
-	private static final String RES_LOC = "src/main/resources/";
 
 	public static RawModel loadOBJ(String objFileName, Loader loader) {
 		FileReader isr = null;
-		File objFile = new File(RES_LOC + objFileName + ".obj");
+		File objFile = new File(Main.fileHandler.getModel(objFileName));
 		try {
 			isr = new FileReader(objFile);
 		} catch (FileNotFoundException e) {

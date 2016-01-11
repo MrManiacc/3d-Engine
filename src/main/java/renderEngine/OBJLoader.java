@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import engineTester.Main;
 import models.RawModel;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -17,7 +18,7 @@ public class OBJLoader {
 	public static RawModel loadObjModel(String fileName, Loader loader) {
 		FileReader fr = null;
 		try {
-			fr = new FileReader(new File("src/main/resources/" + fileName + ".obj"));
+			fr = new FileReader(new File(Main.fileHandler.getModel(fileName)));
 		} catch (FileNotFoundException e) {
 			System.err.println("Couldn't load file!");
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package shaders;
 
 import java.util.List;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -15,8 +16,8 @@ public class StaticShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	private static final String VERTEX_FILE = "src/main/java/shaders/vertexShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/shaders/fragmentShader.txt";
+	private static final String VERTEX_FILE = Main.fileHandler.getShader("vertexShader");
+	private static final String FRAGMENT_FILE = Main.fileHandler.getShader("fragmentShader");
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

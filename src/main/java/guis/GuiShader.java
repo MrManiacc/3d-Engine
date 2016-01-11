@@ -1,13 +1,14 @@
 package guis;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 
 import shaders.ShaderProgram;
 
 public class GuiShader extends ShaderProgram{
 	
-	private static final String VERTEX_FILE = "src/main/java/guis/guiVertexShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/guis/guiFragmentShader.txt";
+	private static final String VERTEX_FILE = Main.fileHandler.getShader("guiVertexShader");
+	private static final String FRAGMENT_FILE = Main.fileHandler.getShader("guiFragmentShader");
 	
 	private int location_transformationMatrix;
 

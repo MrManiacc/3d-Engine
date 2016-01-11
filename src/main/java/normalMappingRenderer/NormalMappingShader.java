@@ -2,6 +2,7 @@ package normalMappingRenderer;
 
 import java.util.List;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -14,8 +15,8 @@ public class NormalMappingShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 4;
 	
-	private static final String VERTEX_FILE = "src/main/java/normalMappingRenderer/normalMapVShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/normalMappingRenderer/normalMapFShader.txt";
+	private static final String VERTEX_FILE = Main.fileHandler.getShader("normalMapVShader");
+	private static final String FRAGMENT_FILE = Main.fileHandler.getShader("normalMapFShader");
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

@@ -1,5 +1,6 @@
 package fontRendering;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -7,8 +8,8 @@ import shaders.ShaderProgram;
 
 public class FontShader extends ShaderProgram {
 
-    private static final String VERTEX_FILE = "src/main/java/fontRendering/fontVertex.txt";
-    private static final String FRAGMENT_FILE = "src/main/java/fontRendering/fontFragment.txt";
+    private static final String VERTEX_FILE = Main.fileHandler.getShader("fontVertex");
+    private static final String FRAGMENT_FILE = Main.fileHandler.getShader("fontFragment");
 
     private int location_colour;
     private int location_translation;

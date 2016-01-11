@@ -2,6 +2,7 @@ package shaders;
 
 import java.util.List;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
@@ -13,8 +14,8 @@ import entities.Light;
 public class TerrainShader extends ShaderProgram{
 	
 	private static final int MAX_LIGHTS = 4;
-	private static final String VERTEX_FILE = "src/main/java/shaders/terrainVertexShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/shaders/terrainFragmentShader.txt";
+	private static final String VERTEX_FILE = Main.fileHandler.getShader("terrainVertexShader");
+	private static final String FRAGMENT_FILE =  Main.fileHandler.getShader("terrainFragmentShader");
 	
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;

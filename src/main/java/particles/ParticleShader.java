@@ -1,5 +1,6 @@
 package particles;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -7,8 +8,8 @@ import shaders.ShaderProgram;
 
 public class ParticleShader extends ShaderProgram {
 
-	private static final String VERTEX_FILE = "src/main/java/particles/particleVShader.txt";
-	private static final String FRAGMENT_FILE = "src/main/java/particles/particleFShader.txt";
+	private static final String VERTEX_FILE = Main.fileHandler.getShader("particleVShader");
+	private static final String FRAGMENT_FILE = Main.fileHandler.getShader("particleFShader");
 
 	private int location_numberOfRows;
 	private int location_projectionMatrix;

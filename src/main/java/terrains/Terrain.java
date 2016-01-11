@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import engineTester.Main;
 import models.RawModel;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -91,7 +92,7 @@ public class Terrain {
 		
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("src/main/resources/" + heightMap + ".png"));
+			image = ImageIO.read(new File(Main.fileHandler.getTexture(heightMap)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -7,6 +7,7 @@ import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import engineTester.Main;
 import models.RawModel;
 
 import org.lwjgl.BufferUtils;
@@ -94,8 +95,7 @@ public class Loader {
     public int loadTexture(String fileName) {
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("PNG", new FileInputStream("src/main/resources/" + fileName
-                    + ".png"));
+            texture = TextureLoader.getTexture("PNG", new FileInputStream(Main.fileHandler.getTexture(fileName)));
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
                     GL11.GL_LINEAR_MIPMAP_LINEAR);
@@ -127,7 +127,7 @@ public class Loader {
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 
         for (int i = 0; i < textureFiles.length; i++) {
-            TextureData data = decodeTextureFile("src/main/resources/" + textureFiles[i] + ".png");
+            TextureData data = decodeTextureFile(Main.fileHandler.getTexture(textureFiles[i]));
             GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA, data.getWidth(), data.getHeight(), 0,
                     GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, data.getBuffer());
         }

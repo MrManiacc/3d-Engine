@@ -1,5 +1,6 @@
 package water;
 
+import engineTester.Main;
 import org.lwjgl.util.vector.Matrix4f;
 
 import shaders.ShaderProgram;
@@ -9,8 +10,8 @@ import entities.Light;
 
 public class WaterShader extends ShaderProgram {
 
-	private final static String VERTEX_FILE = "src/main/java/water/waterVertex.txt";
-	private final static String FRAGMENT_FILE = "src/main/java/water/waterFragment.txt";
+	private final static String VERTEX_FILE = Main.fileHandler.getShader("waterVertex");
+	private final static String FRAGMENT_FILE = Main.fileHandler.getShader("waterFragment");
 
 	private int location_modelMatrix;
 	private int location_viewMatrix;

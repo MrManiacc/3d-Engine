@@ -1,6 +1,7 @@
 package engineTester;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -38,6 +39,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
+import toolbox.FileHandler;
 import toolbox.MousePicker;
 import water.WaterFrameBuffers;
 import water.WaterRenderer;
@@ -46,8 +48,8 @@ import water.WaterTile;
 
 public class MainGameLoop {
 
-    public static void main(String[] args) {
-        System.setProperty("org.lwjgl.librarypath", new File("target/natives").getAbsolutePath());
+    public static void run() throws URISyntaxException {
+        Main.fileHandler.loadNatives();
 
         DisplayManager.createDisplay();
         Loader loader = new Loader();
@@ -55,7 +57,7 @@ public class MainGameLoop {
         MasterRenderer renderer = new MasterRenderer(loader);
         ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
-        FontType font = new FontType(loader.loadTexture("candara"), new File("src/main/resources/candara.fnt"));
+        FontType font = new FontType(loader.loadTexture("candara"), new File(Main.fileHandler.getFont("candara")));
         GUIText text = new GUIText("This is some text!", 3f, font, new Vector2f(0f, 0.0f), 1f, true);
         text.setColour(0, 0, 0);
         text.setBorderWidth(0.6f);
@@ -206,10 +208,6 @@ public class MainGameLoop {
         fireSystem.setScaleError(1f);
         fireSystem.randomizeRotation();
 
-        //For hellix
-        ParticleTexture hellixTexture = new ParticleTexture(loader.loadTexture("cosmic"), 4);
-        hellixTexture.setAdditive(true);
-        ParticleSystem smokeSystem = new ParticleSystem(hellixTexture, 100, 20, -0.2f, 0.8f, 0.7f);
 
         //****************Game Loop Below*********************
 
