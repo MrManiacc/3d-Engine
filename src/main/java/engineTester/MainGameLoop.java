@@ -45,6 +45,7 @@ import water.WaterFrameBuffers;
 import water.WaterRenderer;
 import water.WaterShader;
 import water.WaterTile;
+import world.Biome;
 
 public class MainGameLoop {
 
@@ -91,9 +92,7 @@ public class MainGameLoop {
 
         fern.getTexture().setHasTransparency(true);
 
-        Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
         List<Terrain> terrains = new ArrayList<Terrain>();
-        terrains.add(terrain);
 
         TexturedModel lamp = new TexturedModel(OBJLoader.loadObjModel("lamp", loader),
                 new ModelTexture(loader.loadTexture("lamp")));
@@ -125,41 +124,6 @@ public class MainGameLoop {
 
         //************ENTITIES*******************
 
-        Entity entity = new Entity(barrelModel, new Vector3f(75, 10, -75), 0, 0, 0, 1f);
-        Entity entity2 = new Entity(boulderModel, new Vector3f(85, 10, -75), 0, 0, 0, 1f);
-        Entity entity3 = new Entity(crateModel, new Vector3f(65, 10, -75), 0, 0, 0, 0.04f);
-        normalMapEntities.add(entity);
-        normalMapEntities.add(entity2);
-        normalMapEntities.add(entity3);
-
-        Random random = new Random(5666778);
-        for (int i = 0; i < 60; i++) {
-            if (i % 3 == 0) {
-                float x = random.nextFloat() * 150;
-                float z = random.nextFloat() * -150;
-                if ((x > 50 && x < 100) || (z < -50 && z > -100)) {
-                } else {
-                    float y = terrain.getHeightOfTerrain(x, z);
-
-                    entities.add(new Entity(fern, 3, new Vector3f(x, y, z), 0,
-                            random.nextFloat() * 360, 0, 0.9f));
-                }
-            }
-            if (i % 2 == 0) {
-
-                float x = random.nextFloat() * 150;
-                float z = random.nextFloat() * -150;
-                if ((x > 50 && x < 100) || (z < -50 && z > -100)) {
-
-                } else {
-                    float y = terrain.getHeightOfTerrain(x, z);
-                    entities.add(new Entity(bobble, 1, new Vector3f(x, y, z), 0,
-                            random.nextFloat() * 360, 0, random.nextFloat() * 0.6f + 0.8f));
-                }
-            }
-        }
-        entities.add(new Entity(rocks, new Vector3f(75, 4.6f, -75), 0, 0, 0, 75));
-
         //*******************OTHER SETUP***************
 
         List<Light> lights = new ArrayList<Light>();
@@ -175,7 +139,7 @@ public class MainGameLoop {
         Camera camera = new Camera(player);
         List<GuiTexture> guiTextures = new ArrayList<GuiTexture>();
         GuiRenderer guiRenderer = new GuiRenderer(loader);
-        MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
+        // MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), null);
 
         //**********Water Renderer Set-up************************
 
@@ -183,8 +147,6 @@ public class MainGameLoop {
         WaterShader waterShader = new WaterShader();
         WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
         List<WaterTile> waters = new ArrayList<WaterTile>();
-        WaterTile water = new WaterTile(75, -75, 0);
-        waters.add(water);
 
         //*********Particle System below**********************
 
@@ -209,12 +171,19 @@ public class MainGameLoop {
         fireSystem.randomizeRotation();
 
 
+        //****************Biome Code below*********************
+        Biome.init(loader, texturePack, blendMap, terrains, waters, entities);
+        List<TexturedModel> possibleModels = new ArrayList<TexturedModel>();
+        possibleModels.add(fern);
+        possibleModels.add(bobble);
+        Biome main = new Biome(0, -1, -10, possibleModels);
+
         //****************Game Loop Below*********************
 
         while (!Display.isCloseRequested()) {
-            player.move(terrain);
+            player.move(main.getTerrain());
             camera.move();
-            picker.update();
+            //picker.update();
 
             if (Keyboard.isKeyDown(Keyboard.KEY_U))
                 fireSystem.generateParticles(new Vector3f(player.getPosition()));
@@ -223,23 +192,22 @@ public class MainGameLoop {
 
             ParticleMaster.update(camera);
 
-            entity.increaseRotation(0, 1, 0);
-            entity2.increaseRotation(0, 1, 0);
-            entity3.increaseRotation(0, 1, 0);
             GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 
-            //render reflection texture
-            buffers.bindReflectionFrameBuffer();
-            float distance = 2 * (camera.getPosition().y - water.getHeight());
-            camera.getPosition().y -= distance;
-            camera.invertPitch();
-            renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -water.getHeight() + 1));
-            camera.getPosition().y += distance;
-            camera.invertPitch();
+            for (WaterTile water : waters) {
+                //render reflection texture
+                buffers.bindReflectionFrameBuffer();
+                float distance = 2 * (camera.getPosition().y - water.getHeight());
+                camera.getPosition().y -= distance;
+                camera.invertPitch();
+                renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, 1, 0, -water.getHeight() + 1));
+                camera.getPosition().y += distance;
+                camera.invertPitch();
 
-            //render refraction texture
-            buffers.bindRefractionFrameBuffer();
-            renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
+                //render refraction texture
+                buffers.bindRefractionFrameBuffer();
+                renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
+            }
 
             //render to screen
             GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
