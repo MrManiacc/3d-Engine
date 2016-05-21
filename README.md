@@ -5,4 +5,4 @@
 
 ## Running
 1. Make sure you have maven installed on your machine and have already built the project
-2. Run from root of project: **mvn compile exec:java -Dexec.mainClass=engineTester.Main**
+2. Run from root of project: **mvn compile exec:java -Dexec.mainClass=engine.engineTester.Primary**

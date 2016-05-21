@@ -59,7 +59,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>engineTester.Main</mainClass>
+                            <mainClass>engine.engineTester.Primary</mainClass>
                         </manifest>
                     </archive>
 
